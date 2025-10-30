@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% block title %}<title>Local Library</title>{% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Добавление дополнительного статического CSS файла -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2">
+
+          {% block sidebar %}
+            <ul class="sidebar-nav">
+              <li><a href="{% url 'index' %}">Домой</a></li>
+              <li><a href="{% url 'books' %}">Книги</a></li>
+              <li><a href="{% url 'authors' %}">Авторы</a></li>
+              <li><a href="{% url 'languages' %}">Языки</a></li>
+              <br>
+
+              {% if user.is_authenticated %}
+
+              <li>Пользователь: {{ user.get_username }}</li>
+              <li><a href="{% url 'my-borrowed' %}">Мои заброннированные книги</a></li>
+              <form id="logout-form" method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                <button type="submit">Выйти</button>
+              </form>
+              {% else %}
+                <form id="login-form" method="post" action="{% url 'login' %}">
+                  {% csrf_token %}
+                <button type="submit">Войти</button>
+              </form>
+              {% endif %}
+
+                {% if user.is_staff %}
+       <hr>
+       <ul class="sidebar-nav">
+       <li>Выберите раздел</li>
+       <li><a href="{% url 'all-borrowed' %}">Забронированные</a></li>
+       {% if perms.catalog.add_author %}
+         <li><a href="{% url 'author-create' %}">Добавить автора</a></li>
+       {% endif %}
+       {% if perms.catalog.add_book %}
+       <li><a href="{% url 'book-create' %}">Добавить книгу</a></li>
+       {% endif %}
+           {% if perms.catalog.add_book %}
+       <li><a href="{% url 'language-create' %}">Добавить язык</a></li>
+           {% endif %}
+           {% if perms.catalog.add_book %}
+        <li><a href="{% url 'reserve-book' %}">Забронировать книгу</a></li>
+
+       {% endif %}
+       {% endif %}
+            </ul>
+          {% endblock %}
+
+        </ul></div>
+        <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
+      </div>
+    </div>
+  </body>
+</html>
