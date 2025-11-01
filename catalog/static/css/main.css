@@ -1,0 +1,64 @@
+.container-fluid {
+    background: #FDFFF5;
+}
+
+.book-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-left: 4px solid #3498db;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-title a {
+    transition: color 0.3s ease;
+}
+
+.card-title a:hover {
+    color: #3498db !important;
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.empty-state {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.page-header {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 1rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.pagination .page-link {
+    color: #3498db;
+    border: 1px solid #dee2e6;
+}
+
+.pagination .page-link:hover {
+    color: #2c3e50;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.book-author, .book-genres {
+    font-size: 0.9rem;
+}
+
+.btn-outline-primary {
+    border-width: 2px;
+    font-weight: 500;
+}

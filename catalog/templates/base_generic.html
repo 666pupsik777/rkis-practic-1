@@ -1,73 +1,102 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
     {% block title %}<title>Local Library</title>{% endblock %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Подключение Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Добавление дополнительного статического CSS файла -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
 
-  <body>
+
+</head>
+
+<body>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-2">
+        <div class="row">
+            <!-- Боковая панель -->
+            <div class="col-lg-2 col-md-3 sidebar">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-book"></i> Local Library</h3>
+                </div>
 
-          {% block sidebar %}
-            <ul class="sidebar-nav">
-              <li><a href="{% url 'index' %}">Домой</a></li>
-              <li><a href="{% url 'books' %}">Книги</a></li>
-              <li><a href="{% url 'authors' %}">Авторы</a></li>
-              <li><a href="{% url 'languages' %}">Языки</a></li>
-              <br>
+                {% block sidebar %}
+                <ul class="sidebar-nav">
+                    <li><a href="{% url 'index' %}"><i class="fas fa-home"></i> Домой</a></li>
+                    <li><a href="{% url 'books' %}"><i class="fas fa-book-open"></i> Книги</a></li>
+                    <li><a href="{% url 'authors' %}"><i class="fas fa-user-edit"></i> Авторы</a></li>
+                    <li><a href="{% url 'languages' %}"><i class="fas fa-language"></i> Языки</a></li>
+                </ul>
 
-              {% if user.is_authenticated %}
+                <div class="user-section">
+                    {% if user.is_authenticated %}
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            {{ user.get_username|first|upper }}
+                        </div>
+                        <div>
+                            <div style="font-weight: 500;">{{ user.get_username }}</div>
+                            <small style="opacity: 0.7;">Читатель</small>
+                        </div>
+                    </div>
 
-              <li>Пользователь: {{ user.get_username }}</li>
-              <li><a href="{% url 'my-borrowed' %}">Мои заброннированные книги</a></li>
-              <form id="logout-form" method="post" action="{% url 'logout' %}">
-                  {% csrf_token %}
-                <button type="submit">Выйти</button>
-              </form>
-              {% else %}
-                <form id="login-form" method="post" action="{% url 'login' %}">
-                  {% csrf_token %}
-                <button type="submit">Войти</button>
-              </form>
-              {% endif %}
+                    <ul class="sidebar-nav">
+                        <li><a href="{% url 'my-borrowed' %}"><i class="fas fa-bookmark"></i> Мои забронированные книги</a></li>
+                    </ul>
+
+                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout">
+                            <i class="fas fa-sign-out-alt"></i> Выйти
+                        </button>
+                    </form>
+                    {% else %}
+                    <form id="login-form" method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
 
                 {% if user.is_staff %}
-       <hr>
-       <ul class="sidebar-nav">
-       <li>Выберите раздел</li>
-       <li><a href="{% url 'all-borrowed' %}">Забронированные</a></li>
-       {% if perms.catalog.add_author %}
-         <li><a href="{% url 'author-create' %}">Добавить автора</a></li>
-       {% endif %}
-       {% if perms.catalog.add_book %}
-       <li><a href="{% url 'book-create' %}">Добавить книгу</a></li>
-       {% endif %}
-           {% if perms.catalog.add_book %}
-       <li><a href="{% url 'language-create' %}">Добавить язык</a></li>
-           {% endif %}
-           {% if perms.catalog.add_book %}
-        <li><a href="{% url 'reserve-book' %}">Забронировать книгу</a></li>
+                <div class="admin-section">
+                    <div class="admin-title">Администрирование</div>
+                    <ul class="sidebar-nav">
+                        <li><a href="{% url 'all-borrowed' %}"><i class="fas fa-clipboard-list"></i> Забронированные</a></li>
+                        {% if perms.catalog.add_author %}
+                        <li><a href="{% url 'author-create' %}"><i class="fas fa-user-plus"></i> Добавить автора</a></li>
+                        {% endif %}
+                        {% if perms.catalog.add_book %}
+                        <li><a href="{% url 'book-create' %}"><i class="fas fa-plus-circle"></i> Добавить книгу</a></li>
+                        {% endif %}
+                        {% if perms.catalog.add_book %}
+                        <li><a href="{% url 'language-create' %}"><i class="fas fa-globe"></i> Добавить язык</a></li>
+                        {% endif %}
+                        {% if perms.catalog.add_book %}
+                        <li><a href="{% url 'reserve-book' %}"><i class="fas fa-calendar-plus"></i> Забронировать книгу</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% endblock %}
+            </div>
 
-       {% endif %}
-       {% endif %}
-            </ul>
-          {% endblock %}
-
-        </ul></div>
-        <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
-      </div>
+            <!-- Основная область контента -->
+            <div class="col-lg-10 col-md-9 content-area">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
     </div>
-  </body>
+
+    <!-- Подключение Bootstrap JS и зависимостей -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
 </html>

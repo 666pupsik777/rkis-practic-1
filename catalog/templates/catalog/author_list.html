@@ -1,23 +1,100 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
 {% block content %}
+<div class="authors-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-users"></i>
+            Список авторов
+        </h1>
+        <p class="page-subtitle">Найдено авторов: {{ author_list|length }}</p>
+    </div>
 
-<h1>Список авторов</h1>
+    {% if author_list %}
+    <div class="authors-grid">
+        {% for author in author_list %}
+        <div class="author-card">
+            <div class="author-avatar">
+                <i class="fas fa-user-edit"></i>
+            </div>
+            <div class="author-info">
+                <h3 class="author-name">
+                    <a href="{{ author.get_absolute_url }}" class="author-link">
+                        {{ author }}
+                    </a>
+                </h3>
+                <div class="author-dates">
+                    <span class="birth-date">
+                        <i class="fas fa-birthday-cake"></i>
+                        {{ author.date_of_birth }}
+                    </span>
+                    {% if author.date_of_death %}
+                    <span class="death-date">
+                        <i class="fas fa-cross"></i>
+                        {{ author.date_of_death }}
+                    </span>
+                    {% else %}
+                    <span class="alive-badge">
+                        <i class="fas fa-heart"></i>
+                        Наш современник
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="author-actions">
+                    <a href="{{ author.get_absolute_url }}" class="btn-details">
+                        <i class="fas fa-eye"></i>
+                        Подробнее
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
-{% if author_list %}
-  <ul>
+    <!-- Пагинация -->
+    {% if is_paginated %}
+    <div class="pagination-container">
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">
+                <i class="fas fa-chevron-left"></i>
+                Назад
+            </a>
+            {% endif %}
 
-  {% for author in author_list %}
-    <li>
-      <a href="{{ author.get_absolute_url }}">
-      {{ author }} ({{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %})
-      </a>
-    </li>
-  {% endfor %}
+            <span class="pagination-info">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
 
- </ul>
-{% else %}
-  <p>Нет доступных авторов.</p>
-{% endif %}
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">
+                Вперед
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
 
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-user-slash"></i>
+        </div>
+        <h3 class="empty-title">Авторы не найдены</h3>
+        <p class="empty-description">
+            В библиотеке пока нет зарегистрированных авторов.
+        </p>
+        {% if perms.catalog.add_author %}
+        <a href="{% url 'author-create' %}" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Добавить первого автора
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

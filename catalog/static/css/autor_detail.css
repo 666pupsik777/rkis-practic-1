@@ -1,0 +1,435 @@
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #34495e;
+    --text-color: #2c3e50;
+    --text-light: #7f8c8d;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+.author-detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Заголовок автора */
+.author-header {
+    margin-bottom: 40px;
+}
+
+.author-profile {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+    color: white;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.author-avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-name {
+    margin: 0 0 15px 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.author-dates {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.birth-date,
+.death-date,
+.alive-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.birth-date {
+    background: rgba(52, 152, 219, 0.3);
+}
+
+.death-date {
+    background: rgba(149, 165, 166, 0.3);
+}
+
+.alive-status {
+    background: rgba(231, 76, 60, 0.3);
+}
+
+/* Секция книг */
+.author-books-section {
+    margin-bottom: 40px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--light-color);
+}
+
+.section-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.books-count {
+    background: var(--secondary-color);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Список книг */
+.books-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.book-item {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--secondary-color);
+    transition: var(--transition);
+}
+
+.book-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.book-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.book-title {
+    margin: 0;
+    flex: 1;
+}
+
+.book-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.book-link:hover {
+    color: var(--secondary-color);
+}
+
+.copies-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--light-color);
+    color: var(--text-color);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.book-summary {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.book-summary p {
+    margin: 0;
+}
+
+.book-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.book-details {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.isbn,
+.language {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--light-color);
+    color: var(--text-light);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.read-more-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* Пустое состояние */
+.empty-books {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--light-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--text-light);
+    font-size: 2rem;
+}
+
+.empty-books h3 {
+    margin: 0 0 10px 0;
+    color: var(--text-light);
+    font-size: 1.3rem;
+}
+
+.empty-books p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+/* Административные действия */
+.admin-actions {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--warning-color);
+}
+
+.admin-actions .section-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--light-color);
+    padding-bottom: 10px;
+}
+
+.admin-actions .section-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.actions-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.update-btn {
+    background: var(--warning-color);
+    color: white;
+}
+
+.update-btn:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+.delete-btn {
+    background: var(--danger-color);
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.author-profile,
+.book-item,
+.empty-books,
+.admin-actions {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.book-item:nth-child(odd) {
+    animation-delay: 0.1s;
+}
+
+.book-item:nth-child(even) {
+    animation-delay: 0.2s;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .author-detail-container {
+        padding: 15px;
+    }
+
+    .author-profile {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+        gap: 20px;
+    }
+
+    .author-name {
+        font-size: 2rem;
+    }
+
+    .author-dates {
+        justify-content: center;
+    }
+
+    .section-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .book-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .book-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .actions-buttons {
+        flex-direction: column;
+    }
+
+    .action-btn {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .author-name {
+        font-size: 1.7rem;
+    }
+
+    .author-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .book-item {
+        padding: 20px;
+    }
+
+    .book-link {
+        font-size: 1.2rem;
+    }
+
+    .book-details {
+        flex-direction: column;
+        gap: 8px;
+    }
+}

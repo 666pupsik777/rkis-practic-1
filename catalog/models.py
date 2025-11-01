@@ -3,16 +3,11 @@ from django.urls import reverse
 import uuid
 from django.contrib.auth.models import User
 from datetime import date
-from django.db.models import UniqueConstraint
-from django.db.models.functions import Lower
-from django.conf import settings
 
 class Genre(models.Model):
-    """Модель, представляющая книжный жанр (например фантастик) """
     name = models.CharField(max_length=200, help_text="Введите жанр книги")
 
     def __str__(self):
-        """Строка для представления объекта модели (на сайте администратора)"""
         return self.name
 
 class Book(models.Model):
@@ -29,7 +24,6 @@ class Book(models.Model):
 
 
     def __str__(self):
-        """ Строка для представления модельного объекта. """
         return self.title
 
 

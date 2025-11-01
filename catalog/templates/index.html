@@ -1,24 +1,68 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
 {% block content %}
-<h1>Домашняя страница Local Library</h1>
+<div class="home-container">
+    <header class="hero-section">
+        <h1 class="hero-title">Добро пожаловать в Local Library</h1>
+        <p class="hero-subtitle">Ваша цифровая библиотека</p>
+    </header>
 
-  <p>Добро пожаловать в <em>LocalLibrary</em>, очень простой сайт Django, разработанный в качестве учебного примера.</p>
+    <section class="welcome-section">
+        <div class="welcome-card">
+            <p class="welcome-text">
+                Добро пожаловать в <em class="brand">LocalLibrary</em>, очень простой сайт Django,
+                разработанный в качестве учебного примера.
+            </p>
+        </div>
+    </section>
 
-<h2>Динамический контент</h2>
+    <section class="stats-section">
+        <h2 class="section-title">Динамический контент</h2>
+        <p class="section-subtitle">В библиотеке имеется следующее количество записей:</p>
 
-  <p>В библиотеке имеется следующее количество записей:</p>
-  <ul>
-    <li><strong>Книги:</strong> {{ num_books }}</li>
-    <li><strong>Копии:</strong> {{ num_instances }}</li>
-    <li><strong>Доступные копии:</strong> {{ num_instances_available }}</li>
-    <li><strong>Авторы:</strong> {{ num_authors }}</li>
-  </ul>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon books-icon"></div>
+                <h3 class="stat-number">{{ num_books }}</h3>
+                <p class="stat-label">Книги</p>
+            </div>
 
-  <p>
-  Вы посетили этот сайт {{ num_visits }}{% if num_visits == 1 %} раз
-    {% else %} раз {% endif %}.
-  </p>
+            <div class="stat-card">
+                <div class="stat-icon copies-icon"></div>
+                <h3 class="stat-number">{{ num_instances }}</h3>
+                <p class="stat-label">Копии</p>
+            </div>
 
+            <div class="stat-card">
+                <div class="stat-icon available-icon"></div>
+                <h3 class="stat-number">{{ num_instances_available }}</h3>
+                <p class="stat-label">Доступные копии</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon authors-icon"></div>
+                <h3 class="stat-number">{{ num_authors }}</h3>
+                <p class="stat-label">Авторы</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="visits-section">
+        <div class="visits-card">
+            <div class="visits-content">
+                <div class="visits-icon"></div>
+                <div class="visits-text">
+                    <h3>Статистика посещений</h3>
+                    <p>
+                        Вы посетили этот сайт <span class="visits-count">{{ num_visits }}</span>
+                        {% if num_visits == 1 %} раз{% else %} раз{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}
-

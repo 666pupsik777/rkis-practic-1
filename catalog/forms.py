@@ -20,7 +20,7 @@ class RenewBookForm(forms.Form):
 
          # Если всё ок возвращает очищенную дату.
         return data
-
+# сохранение книги
 class BookReserveForm(forms.Form):
     book_title = forms.CharField(label="Название книги", max_length=100)
     class Meta:

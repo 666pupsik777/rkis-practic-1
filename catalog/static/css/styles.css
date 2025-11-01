@@ -1,3 +1,15 @@
+@import "menu.css";
+@import "main.css";
+@import "home.css";
+@import "autor.css";
+@import "languages.css";
+@import "deleting_an_author.css";
+@import "information_book.css";
+@import "autor_form.css";
+@import "autor_detail.css";
+@import "booked.css";
+
+
 .sidebar-nav {
   margin-top: 20px;
   padding: 0;

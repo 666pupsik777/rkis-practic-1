@@ -1,17 +1,98 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
 {% block content %}
+<div class="languages-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-globe-americas"></i>
+            Список языков
+        </h1>
+        <p class="page-subtitle">Доступные языки в библиотеке: {{ language_list|length }}</p>
+    </div>
 
-<h1>Список языков</h1>
+    {% if language_list %}
+    <div class="languages-grid">
+        {% for language in language_list %}
+        <div class="language-card">
+            <div class="language-flag">
+                <i class="fas fa-language"></i>
+            </div>
+            <div class="language-content">
+                <h3 class="language-name">
+                    <a href="{{ language.get_absolute_url }}" class="language-link">
+                        {{ language.name }}
+                    </a>
+                </h3>
+                {% if language.code %}
+                <div class="language-code">
+                    <span class="code-badge">
+                        <i class="fas fa-code"></i>
+                        {{ language.code }}
+                    </span>
+                </div>
+                {% endif %}
+                <div class="language-actions">
+                    <a href="{{ language.get_absolute_url }}" class="btn-explore">
+                        <i class="fas fa-search"></i>
+                        Исследовать
+                    </a>
+                </div>
+            </div>
+            <div class="language-books">
+                <div class="books-count">
+                    <i class="fas fa-book"></i>
+                    <span class="count">{{ language.book_set.count }}</span>
+                </div>
+                <span class="books-label">книг</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
-<ul>
-  {% for language in language_list %}
-  <li>
-    <a href="{{ language.get_absolute_url }}">{{ language }}</a>
-  </li>
-  {% empty %}
-  <li>Языки не добавлены</li>
-  {% endfor %}
-</ul>
+    <!-- Пагинация -->
+    {% if is_paginated %}
+    <div class="pagination-container">
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">
+                <i class="fas fa-chevron-left"></i>
+                Назад
+            </a>
+            {% endif %}
 
+            <span class="pagination-info">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">
+                Вперед
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-globe"></i>
+        </div>
+        <h3 class="empty-title">Языки не найдены</h3>
+        <p class="empty-description">
+            В библиотеке пока нет зарегистрированных языков.
+        </p>
+        {% if perms.catalog.add_language %}
+        <a href="{% url 'language-create' %}" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Добавить первый язык
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

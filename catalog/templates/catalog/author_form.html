@@ -1,11 +1,90 @@
 {% extends "base_generic.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% block title %}<title>Форма - Local Library</title>{% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
 {% block content %}
-  <form action="" method="post">
-      {% csrf_token %}
-      <table>
-      {{ form.as_table }}
-      </table>
-      <input type="submit" value="Отправить" />
-  </form>
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h1 class="form-title">
+                <i class="fas fa-edit"></i>
+                {% if form.instance.pk %}Редактирование{% else %}Создание{% endif %}
+            </h1>
+            <p class="form-subtitle">Заполните необходимые поля ниже</p>
+        </div>
+
+        <form action="" method="post" class="custom-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="form-errors">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="error-content">
+                    <h4>Обнаружены ошибки:</h4>
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="form-fields">
+                {% for field in form %}
+                <div class="form-field {% if field.errors %}has-error{% endif %}">
+                    <label for="{{ field.id_for_label }}" class="field-label">
+                        {{ field.label }}
+                        {% if field.field.required %}
+                        <span class="required-star">*</span>
+                        {% endif %}
+                    </label>
+
+                    <div class="field-input">
+                        {{ field }}
+                        {% if field.help_text %}
+                        <div class="field-help">
+                            <i class="fas fa-info-circle"></i>
+                            {{ field.help_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if field.errors %}
+                    <div class="field-errors">
+                        {% for error in field.errors %}
+                        <span class="error-message">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ error }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Отправить
+                </button>
+                <a href="javascript:history.back()" class="cancel-btn">
+                    <i class="fas fa-times"></i>
+                    Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 {% endblock %}

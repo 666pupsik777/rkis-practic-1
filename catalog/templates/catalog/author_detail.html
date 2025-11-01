@@ -1,30 +1,133 @@
 {% extends "base_generic.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% block title %}<title>{{ author }} - Local Library</title>{% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
 {% block content %}
+<div class="author-detail-container">
+    <!-- Заголовок автора -->
+    <header class="author-header">
+        <div class="author-profile">
+            <div class="author-avatar">
+                <i class="fas fa-user-edit"></i>
+            </div>
+            <div class="author-info">
+                <h1 class="author-name">{{ author }}</h1>
+                <div class="author-dates">
+                    <span class="birth-date">
+                        <i class="fas fa-birthday-cake"></i>
+                        {{ author.date_of_birth }}
+                    </span>
+                    {% if author.date_of_death %}
+                    <span class="death-date">
+                        <i class="fas fa-cross"></i>
+                        {{ author.date_of_death }}
+                    </span>
+                    {% else %}
+                    <span class="alive-status">
+                        <i class="fas fa-heart"></i>
+                        Наш современник
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
 
-<h1>Автор: {{ author }} </h1>
-<p>{{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %}</p>
+    <!-- Секция книг автора -->
+    <section class="author-books-section">
+        <div class="section-header">
+            <h2>
+                <i class="fas fa-books"></i>
+                Книги автора
+            </h2>
+            <span class="books-count">{{ author.book_set.all.count }} книг</span>
+        </div>
 
-<div style="margin-left:20px;margin-top:20px">
-<h4>Книги</h4>
+        {% if author.book_set.all %}
+        <div class="books-list">
+            {% for book in author.book_set.all %}
+            <div class="book-item">
+                <div class="book-header">
+                    <h3 class="book-title">
+                        <a href="{% url 'book-detail' book.pk %}" class="book-link">
+                            {{ book.title }}
+                        </a>
+                    </h3>
+                    <span class="copies-count">
+                        <i class="fas fa-copy"></i>
+                        {{ book.bookinstance_set.all.count }} экз.
+                    </span>
+                </div>
 
-<dl>
-{% for book in author.book_set.all %}
-  <dt><a href="{% url 'book-detail' book.pk %}">{{book}}</a> ({{book.bookinstance_set.all.count}})</dt>
-  <dd>{{book.summary}}</dd>
-  {% empty %}
-  <p>У этого автора нет книг(</p>
-{% endfor %}
-</dl>
+                {% if book.summary %}
+                <div class="book-summary">
+                    <p>{{ book.summary|truncatewords:30 }}</p>
+                </div>
+                {% endif %}
 
-  {% if user.is_staff %}
-          <button>
-              <a href="{% url 'author-update' author.id %}">Обновить автора</a>
-          </button>
-        <button>
-              <a href="{% url 'author-delete' author.id %}">Удалить автора</a>
-          </button>
+                <div class="book-meta">
+                    <div class="book-details">
+                        {% if book.isbn %}
+                        <span class="isbn">
+                            <i class="fas fa-barcode"></i>
+                            ISBN: {{ book.isbn }}
+                        </span>
+                        {% endif %}
+
+                        {% if book.language %}
+                        <span class="language">
+                            <i class="fas fa-language"></i>
+                            {{ book.language }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <a href="{% url 'book-detail' book.pk %}" class="read-more-btn">
+                        <i class="fas fa-eye"></i>
+                        Подробнее
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-books">
+            <div class="empty-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3>Книги не найдены</h3>
+            <p>У этого автора пока нет книг в библиотеке</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Административные действия -->
+    {% if user.is_staff %}
+    <section class="admin-actions">
+        <div class="section-header">
+            <h3><i class="fas fa-tools"></i>Административные действия</h3>
+        </div>
+        <div class="actions-buttons">
+            <a href="{% url 'author-update' author.id %}" class="action-btn update-btn">
+                <i class="fas fa-edit"></i>
+                Обновить автора
+            </a>
+            <a href="{% url 'author-delete' author.id %}" class="action-btn delete-btn">
+                <i class="fas fa-trash"></i>
+                Удалить автора
+            </a>
+        </div>
+    </section>
     {% endif %}
-
 </div>
+
+
 {% endblock %}

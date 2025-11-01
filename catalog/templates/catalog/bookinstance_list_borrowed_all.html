@@ -1,26 +1,110 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
 {% block content %}
-    <h1>Все занятые книги</h1>
+<div class="borrowed-books-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-bookmark"></i>
+            Все занятые книги
+        </h1>
+        <p class="page-subtitle">Количество занятых книг: {{ bookinstance_list|length }}</p>
+    </div>
 
     {% if bookinstance_list %}
-    <ul>
+    <div class="borrowed-books-list">
+        {% for bookinst in bookinstance_list %}
+        <div class="borrowed-book-card {% if bookinst.is_overdue %}overdue{% endif %}">
+            <div class="book-status">
+                {% if bookinst.is_overdue %}
+                <div class="status-badge overdue-badge">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Просрочено
+                </div>
+                {% else %}
+                <div class="status-badge on-time-badge">
+                    <i class="fas fa-clock"></i>
+                    В процессе
+                </div>
+                {% endif %}
+            </div>
 
-      {% for bookinst in bookinstance_list %} 
-      <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
-        <a href="{% url 'book-detail' bookinst.book.pk %}">
-            {{bookinst.book.title}}</a> (<b>{{ bookinst.due_back }}</b>)
+            <div class="book-main-info">
+                <h3 class="book-title">
+                    <a href="{% url 'book-detail' bookinst.book.pk %}" class="book-link">
+                        {{ bookinst.book.title }}
+                    </a>
+                </h3>
 
-            {% if perms.catalog.can_mark_returned %}-
-                <a href="{% url 'renew-book-librarian' bookinst.id %}">Продлить</a>
+                <div class="due-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="due-label">Срок возврата:</span>
+                    <strong class="due-value">{{ bookinst.due_back }}</strong>
+                </div>
+
+                {% if user.is_staff %}
+                <div class="borrower-info">
+                    <i class="fas fa-user"></i>
+                    <span class="borrower-label">Читатель:</span>
+                    <span class="borrower-name">{{ bookinst.borrower }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="book-actions">
+                {% if perms.catalog.can_mark_returned %}
+                <a href="{% url 'renew-book-librarian' bookinst.id %}" class="btn-renew">
+                    <i class="fas fa-redo-alt"></i>
+                    Продлить
+                </a>
+                {% endif %}
+
+                <a href="{% url 'book-detail' bookinst.book.pk %}" class="btn-details">
+                    <i class="fas fa-info-circle"></i>
+                    Подробнее
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Пагинация -->
+    {% if is_paginated %}
+    <div class="pagination-container">
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">
+                <i class="fas fa-chevron-left"></i>
+                Назад
+            </a>
             {% endif %}
 
-          {% if user.is_staff %}- {{ bookinst.borrower }}{% endif %}
-      </li>
-      {% endfor %}
-    </ul>
+            <span class="pagination-info">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">
+                Вперед
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
 
     {% else %}
-      <p>Нет занятых книг.</p>
-    {% endif %}       
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-books"></i>
+        </div>
+        <h3 class="empty-title">Нет занятых книг</h3>
+        <p class="empty-description">
+            Все книги в настоящее время доступны в библиотеке.
+        </p>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
